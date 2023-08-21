@@ -1,0 +1,25 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-icon class="contatoicon" slot="start" name="people-circle-outline"> </ion-icon>
+    <ion-title>
+      Agenda de contatos
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+
+  <ion-list *ngFor="let contato of this.listaDeContatos; let i = index">
+  <ion-item (click)="editar(i)">
+     <ion-label>{{contato.nome}}</ion-label>
+  </ion-item>
+  </ion-list>
+
+
+  <ion-fab horizontal="end" vertical="bottom">
+    <ion-fab-button (click)="irParaCadastrar()">
+      <ion-icon name="add"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
+
+</ion-content>
