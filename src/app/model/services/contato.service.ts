@@ -21,13 +21,21 @@ export class ContatoService {
    cadastrar(contato: Contato){
     this.listaDeContatos.push(contato);
    }
+
    obterTodos(): Contato[]{
     return this.listaDeContatos;
    }
+
    obterPorIndice(indice: number): Contato{
     return this.listaDeContatos[indice];
    }
-   atualizar(){}
-   deletar(){}
+
+   atualizar(indice: number, novo: Contato){
+    this.listaDeContatos[indice] = novo;
+   }
+
+   deletar(indice: number){
+    this.listaDeContatos.splice(indice, 1);
+   }
    
 }
