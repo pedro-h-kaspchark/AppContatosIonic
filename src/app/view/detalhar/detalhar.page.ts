@@ -79,8 +79,11 @@ export class DetalharPage implements OnInit {
     }
   
   }
-    
   excluir(){
+    this.presentConfirmAlert("ATENÇÃO", "Deseja realmente excluir o contato?")
+  }
+    
+  excluirContato(){
     this.contatoService.deletar(this.indice);
     this.router.navigate(["/home"])
   }
@@ -95,5 +98,19 @@ export class DetalharPage implements OnInit {
   
     await alert.present();
     }
+
+    async presentConfirmAlert(subHeader: string, message: string) {
+      const alert = await this.alertController.create({
+        header: 'Agenda de Contatos',
+        subHeader: subHeader,
+        message: message,
+        buttons: [
+          {text: "Cancelar", role: 'cancelar', handler: ()=>{console.log("cancelou")}},
+          {text: "Confirmar", role: 'confirmar', handler: (acao)=>{this.excluirContato()}}
+        ],
+      });
+    
+      await alert.present();
+      }
 
 }
