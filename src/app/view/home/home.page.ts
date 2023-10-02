@@ -12,7 +12,7 @@ import { ContatoService } from 'src/app/model/services/contato.service';
 export class HomePage {
   public listaDeContatos : Contato[] = [];
 
-  constructor(private alertController: AlertController, private router : Router, private contatoService : ContatoService) {
+  constructor(private router : Router, private contatoService : ContatoService) {
       this.listaDeContatos = this.contatoService.obterTodos();
     }
 
