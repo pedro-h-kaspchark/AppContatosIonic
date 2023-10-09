@@ -1,4 +1,5 @@
 export class Contato{
+    private _id!: string;
     private _nome: string;
     private _email!: string;
     private _telefone: number;
@@ -35,5 +36,12 @@ export class Contato{
     }
     public set genero(value: number) {
         this._genero = value;
+    }
+    //---------------------------------------//
+    public get id(): string {
+        return this._id;
+    }
+    public set id(value: string) {
+        this._id = value;
     }
 }

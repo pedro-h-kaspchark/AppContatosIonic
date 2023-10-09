@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AlertController } from '@ionic/angular';
 import { Contato } from 'src/app/model/entities/Contato';
-import { ContatoService } from 'src/app/model/services/contato.service';
+import { FirebaseService } from 'src/app/model/services/firebase.service';
 
 @Component({
   selector: 'app-detalhar',
@@ -10,15 +10,15 @@ import { ContatoService } from 'src/app/model/services/contato.service';
   styleUrls: ['./detalhar.page.scss'],
 })
 export class DetalharPage implements OnInit {
-  indice! : number;
-  nome! : string;
-  telefone! : number;
-  email! : string;
-  genero! : number;
-  contato! : Contato;
+  indice!: number;
+  nome!: string;
+  telefone!: number;
+  email!: string;
+  genero!: number;
+  contato!: Contato;
   edicao: boolean = true;
 
-  constructor(private alertController: AlertController, private actRoute : ActivatedRoute, private contatoService : ContatoService, private router: Router) {
+  constructor(private alertController: AlertController, private actRoute : ActivatedRoute, private firebase: FirebaseService, private router: Router) {
   
    }
 
@@ -28,7 +28,6 @@ export class DetalharPage implements OnInit {
         this.indice = parametros["indice"];
       }
     })
-    this.contato = this.contatoService.obterPorIndice(this.indice);
     this.nome = this.contato.nome;
     this.telefone = this.contato.telefone;
     this.email = this.contato.email;
@@ -51,8 +50,8 @@ export class DetalharPage implements OnInit {
             if(this.email){
               novo.email = this.email;
             }
-            this.contatoService.atualizar(this.indice, novo);
-            this.router.navigate(["/home"]);
+            novo.genero = this.genero;
+            this.firebase.cadastrar(novo).then(() => this.router.navigate(["/home"])).catch((error) => {console.log(error); this.presentAlert("Erro", "Erro ao salvar o contato!")});
           }
           else{
             this.presentAlert("Erro ao cadastrar!", "N° de telefone incorreto");
@@ -80,14 +79,21 @@ export class DetalharPage implements OnInit {
   
   }
   excluir(){
-    this.presentConfirmAlert("ATENÇÃO", "Deseja realmente excluir o contato?")
+    this.presentConfirmAlert("ATENÇÃO", "Deseja realmente excluir o contato?");
   }
     
-  excluirContato(){
-    this.contatoService.deletar(this.indice);
-    this.router.navigate(["/home"])
+  excluirContato(){  
+    if (this.contato && this.contato.id){
+      this.firebase.excluir('/contatos/${this.contato.id}').then(() => {
+      this.router.navigate(['/home']);
+    }).catch((error) => {
+      console.log(error);
+      this.presentAlert('Erro', 'Erro ao excluir o contato!');
+    });
+  }else {
+    this.presentAlert('Erro', 'O ID do contato não está definido.');
   }
-
+}
   async presentAlert(subHeader: string, message: string) {
     const alert = await this.alertController.create({
       header: 'Agenda de Contatos',
