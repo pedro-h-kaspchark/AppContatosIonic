@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { Router } from '@angular/router';
 import { AlertController } from '@ionic/angular';
 import { Contato } from 'src/app/model/entities/Contato';
 import { FirebaseService } from 'src/app/model/services/firebase.service';
@@ -18,16 +18,12 @@ export class DetalharPage implements OnInit {
   contato!: Contato;
   edicao: boolean = true;
 
-  constructor(private alertController: AlertController, private actRoute : ActivatedRoute, private firebase: FirebaseService, private router: Router) {
+  constructor(private alertController: AlertController, private firebase: FirebaseService, private router: Router) {
   
    }
 
   ngOnInit() {
-    this.actRoute.params.subscribe((parametros) => {
-      if(parametros["indice"]){
-        this.indice = parametros["indice"];
-      }
-    })
+    this.contato = history.state.contato;
     this.nome = this.contato.nome;
     this.telefone = this.contato.telefone;
     this.email = this.contato.email;
@@ -51,7 +47,7 @@ export class DetalharPage implements OnInit {
               novo.email = this.email;
             }
             novo.genero = this.genero;
-            this.firebase.cadastrar(novo).then(() => this.router.navigate(["/home"])).catch((error) => {console.log(error); this.presentAlert("Erro", "Erro ao salvar o contato!")});
+            this.firebase.editar(novo, this.contato.id).then(() => this.router.navigate(["/home"])).catch((error) => {console.log(error); this.presentAlert("Erro", "Erro ao atualizar o contato!")});
           }
           else{
             this.presentAlert("Erro ao cadastrar!", "N° de telefone incorreto");
@@ -68,10 +64,6 @@ export class DetalharPage implements OnInit {
         this.presentAlert("Erro ao cadastrar!", "Todos os campos são obrigatórios");
       }
   
-    this.nome = "";
-    this.email = "";
-    this.telefone = NaN;
-  
   function validarEmail(email: string): boolean{
     const padrao = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     return padrao.test(email);
@@ -82,18 +74,10 @@ export class DetalharPage implements OnInit {
     this.presentConfirmAlert("ATENÇÃO", "Deseja realmente excluir o contato?");
   }
     
-  excluirContato(){  
-    if (this.contato && this.contato.id){
-      this.firebase.excluir('/contatos/${this.contato.id}').then(() => {
-      this.router.navigate(['/home']);
-    }).catch((error) => {
-      console.log(error);
-      this.presentAlert('Erro', 'Erro ao excluir o contato!');
-    });
-  }else {
-    this.presentAlert('Erro', 'O ID do contato não está definido.');
+  excluirContato(){
+    this.firebase.excluir(this.contato.id).then(() => {this.router.navigate(["/home"]);}).catch((error) => {console.log(error); this.presentAlert("Erro", "Erro ao excluir o contato!")});
   }
-}
+
   async presentAlert(subHeader: string, message: string) {
     const alert = await this.alertController.create({
       header: 'Agenda de Contatos',

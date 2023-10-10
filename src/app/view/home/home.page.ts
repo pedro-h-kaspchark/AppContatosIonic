@@ -1,3 +1,4 @@
+import { state } from '@angular/animations';
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { Contato } from 'src/app/model/entities/Contato';
@@ -19,7 +20,7 @@ export class HomePage {
     this.router.navigate(["/cadastrar"]);
   }
 
-  editar(indice: number){
-    this.router.navigate(["/detalhar", indice]);
+  editar(contato: Contato){
+    this.router.navigateByUrl("/detalhar", {state: {contato: contato}});
   }
 }

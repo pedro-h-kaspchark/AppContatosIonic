@@ -50,10 +50,6 @@ cadastrar(){
       this.presentAlert("Erro ao cadastrar!", "Todos os campos são obrigatórios");
     }
 
-  this.nome = "";
-  this.email = "";
-  this.telefone = NaN;
-
 function validarEmail(email: string): boolean{
   const padrao = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
   return padrao.test(email);
