@@ -15,9 +15,11 @@
     <ion-item>
       <ion-input label="Nome" placeholder="Insira o nome" [(ngModel)]="nome"></ion-input>
     </ion-item>
+
     <ion-item>
       <ion-input label="Email" type="string" placeholder="Insira o email" [(ngModel)]="email"></ion-input>
     </ion-item>
+
     <ion-item>
       <ion-input label="Telefone" type="number" placeholder="Insira o telefone" [(ngModel)]="telefone"></ion-input>
     </ion-item>
@@ -28,6 +30,12 @@
         <ion-select-option value="1">Feminino</ion-select-option>
         <ion-select-option value="2">Prefiro não dizer</ion-select-option>
       </ion-select>
+    </ion-item>
+
+    <ion-item>
+      <ion-button size="default" color="success" shape="round">
+        <input type="file" (change)="uploadFile($event.target)"/>
+      </ion-button>
     </ion-item>
 
     <ion-button expand="full" (click) = "cadastrar()">Cadastrar</ion-button>

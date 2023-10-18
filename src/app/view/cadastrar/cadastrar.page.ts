@@ -14,12 +14,16 @@ export class CadastrarPage implements OnInit {
   public email! : string;
   public telefone! : number;
   public genero! : number;
+  public imagem : any;
 
   constructor(private alertController: AlertController, private router: Router, private firebase: FirebaseService) {
     
    }
 
   ngOnInit() {
+  }
+  uploadFile(imagem: any){
+    this.imagem = imagem.files;
   }
 
 cadastrar(){
@@ -33,7 +37,11 @@ cadastrar(){
             novo.email = this.email;
           }
           novo.genero = this.genero;
+          if(this.imagem){
+            this.firebase.uploadImage(this.imagem, novo)?.then(() =>{this.router.navigate(["/home"])})
+          }else{
           this.firebase.cadastrar(novo).then(() => this.router.navigate(["/home"])).catch((error) => {console.log(error); this.presentAlert("Erro", "Erro ao salvar o contato!")});
+          }
         }
         else{
           this.presentAlert("Erro ao cadastrar!", "N° de telefone incorreto");
