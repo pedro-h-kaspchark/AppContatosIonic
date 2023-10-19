@@ -17,6 +17,7 @@ export class DetalharPage implements OnInit {
   genero!: number;
   contato!: Contato;
   edicao: boolean = true;
+  imagem!: any;
 
   constructor(private alertController: AlertController, private firebase: FirebaseService, private router: Router) {
   
@@ -28,6 +29,7 @@ export class DetalharPage implements OnInit {
     this.telefone = this.contato.telefone;
     this.email = this.contato.email;
     this.genero = this.contato.genero;
+
   }
   habilitar(){
     if(this.edicao){
@@ -35,6 +37,9 @@ export class DetalharPage implements OnInit {
     }else{
       this.edicao = true;
     }
+  }
+  uploadFile(imagem: any){
+    this.imagem = imagem.files;
   }
   editar(){
     if(this.nome && this.email && this.telefone){
@@ -47,7 +52,12 @@ export class DetalharPage implements OnInit {
               novo.email = this.email;
             }
             novo.genero = this.genero;
-            this.firebase.editar(novo, this.contato.id).then(() => this.router.navigate(["/home"])).catch((error) => {console.log(error); this.presentAlert("Erro", "Erro ao atualizar o contato!")});
+            novo.id = this.contato.id;
+            if(this.imagem){
+              this.firebase.uploadImage(this.imagem, novo)?.then(() => {this.router.navigate(["/home"]);})
+            }else{novo.downloadURL = this.contato.downloadURL;
+              this.firebase.editar(novo, this.contato.id).then(() => this.router.navigate(["/home"]))
+              .catch((error) => {console.log(error); this.presentAlert("Erro", "Erro ao atualizar o contato!")});}
           }
           else{
             this.presentAlert("Erro ao cadastrar!", "N° de telefone incorreto");
@@ -75,7 +85,8 @@ export class DetalharPage implements OnInit {
   }
     
   excluirContato(){
-    this.firebase.excluir(this.contato.id).then(() => {this.router.navigate(["/home"]);}).catch((error) => {console.log(error); this.presentAlert("Erro", "Erro ao excluir o contato!")});
+    this.firebase.excluir(this.contato.id).then(() => {this.router.navigate(["/home"]);})
+    .catch((error) => {console.log(error); this.presentAlert("Erro", "Erro ao excluir o contato!")});
   }
 
   async presentAlert(subHeader: string, message: string) {
@@ -102,5 +113,5 @@ export class DetalharPage implements OnInit {
     
       await alert.present();
       }
-
+      
 }

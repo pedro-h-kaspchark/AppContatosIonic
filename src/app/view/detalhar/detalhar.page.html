@@ -30,7 +30,13 @@
       </ion-select>
     </ion-item>
 
-    <ion-button expand="full" (click) = "editar()">Salvar</ion-button>
-    <ion-button expand="full" (click) = "excluir()" color="danger">Excluir</ion-button>
+    <img src="{{this.contato.downloadURL}}">
+    <ion-item>
+      <ion-button size="default" color="success" shape="round">
+        <input type="file" (change)="uploadFile($event.target)"/>
+      </ion-button>
+    </ion-item>
+    <ion-button expand="full" (click) = "editar()" disabled="{{ edicao }}">Salvar</ion-button>
+    <ion-button expand="full" (click) = "excluir()" color="danger" disabled="{{ edicao }}">Excluir</ion-button>
 
 </ion-content>
