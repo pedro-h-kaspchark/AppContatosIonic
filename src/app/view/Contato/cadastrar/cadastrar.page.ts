@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { AlertController } from '@ionic/angular';
+import { Alert } from 'src/app/common/alert';
 import { Contato } from 'src/app/model/entities/Contato';
 import { FirebaseService } from 'src/app/model/services/firebase.service';
 
@@ -16,7 +16,7 @@ export class CadastrarPage implements OnInit {
   public genero! : number;
   public imagem : any;
 
-  constructor(private alertController: AlertController, private router: Router, private firebase: FirebaseService) {
+  constructor(private router: Router, private firebase: FirebaseService, private alert: Alert) {
     
    }
 
@@ -40,38 +40,27 @@ cadastrar(){
           if(this.imagem){
             this.firebase.uploadImage(this.imagem, novo)?.then(() =>{this.router.navigate(["/home"])})
           }else{
-          this.firebase.cadastrar(novo).then(() => this.router.navigate(["/home"])).catch((error) => {console.log(error); this.presentAlert("Erro", "Erro ao salvar o contato!")});
+          this.firebase.cadastrar(novo).then(() => this.router.navigate(["/home"])).catch((error) => {console.log(error); this.alert.presentAlert("Erro", "Erro ao salvar o contato!")});
           }
         }
         else{
-          this.presentAlert("Erro ao cadastrar!", "N° de telefone incorreto");
+          this.alert.presentAlert("Erro ao cadastrar!", "N° de telefone incorreto");
         }
       }
       else{
-        this.presentAlert("Erro ao cadastrar!", "Email incorreto");
+        this.alert.presentAlert("Erro ao cadastrar!", "Email incorreto");
       }
     }
     else{
-      this.presentAlert("Erro ao cadastrar!", "Nome muito curto");
+      this.alert.presentAlert("Erro ao cadastrar!", "Nome muito curto");
     }
   }else{
-      this.presentAlert("Erro ao cadastrar!", "Todos os campos são obrigatórios");
+      this.alert.presentAlert("Erro ao cadastrar!", "Todos os campos são obrigatórios");
     }
 
 function validarEmail(email: string): boolean{
   const padrao = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
   return padrao.test(email);
   }
-
-}
-async presentAlert(subHeader: string, message: string) {
-  const alert = await this.alertController.create({
-    header: 'Agenda de Contatos',
-    subHeader: subHeader,
-    message: message,
-    buttons: ['OK'],
-  });
-
-  await alert.present();
   }
 }

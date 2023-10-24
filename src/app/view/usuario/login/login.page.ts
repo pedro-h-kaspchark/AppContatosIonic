@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-import { Route, Router } from '@angular/router';
-import { AlertController } from '@ionic/angular';
+import { Router } from '@angular/router';
 import { Alert } from 'src/app/common/alert';
 
 @Component({
@@ -12,7 +11,7 @@ import { Alert } from 'src/app/common/alert';
 export class LoginPage implements OnInit {
   public logar!: FormGroup;
 
-  constructor(private router: Router, private formBuilder: FormBuilder, private alertController: AlertController){
+  constructor(private router: Router, private formBuilder: FormBuilder, private alert: Alert){
     this.logar = new FormGroup({
       email: new FormControl(''),
       senha: new FormControl('')
@@ -32,9 +31,9 @@ export class LoginPage implements OnInit {
 
   submitForm(){
     if(!this.logar.valid){
-      this.presentAlert("Ok", "Erro ao logar!")
+      this.alert.presentAlert("Ok", "Erro ao logar!")
     }else{
-      this.presentAlert("Ok", "Bem vindo!");
+      this.alert.presentAlert("Ok", "Bem vindo!");
     }
   }
 
@@ -43,16 +42,5 @@ export class LoginPage implements OnInit {
   irParaRegistrar(){
     this.router.navigate(['/register']);
   }
-
-  async presentAlert(subHeader: string, message: string) {
-    const alert = await this.alertController.create({
-      header: 'Agenda de Contatos',
-      subHeader: subHeader,
-      message: message,
-      buttons: ['OK'],
-    });
-  
-    await alert.present();
-    }
 
 }

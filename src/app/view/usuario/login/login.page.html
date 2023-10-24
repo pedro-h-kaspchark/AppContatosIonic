@@ -1,15 +1,15 @@
 <ion-header>
   <ion-toolbar>
-    <ion-title>Bem Vindo</ion-title>
+    <ion-title slot="start">Bem Vindo</ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content>
+<ion-content [fullscreen]="true">
   <ion-list>
     <form [formGroup]="logar" (ngSubmit)="submitForm()" novalidate>
       <ion-item>
         <ion-label position="floating">Email</ion-label>
-        <ion-input type="email" formControlName="email"></ion-input>
+        <ion-input type="email" formControlName="email" placeholder="Insira seu E-mail"></ion-input>
       </ion-item>
       <!--Mensagens de erro-->
       <span *ngIf="logar.get('email')?.touched && logar.get('email')?.errors?.['required']">Email é obrigatório!</span>
@@ -17,15 +17,17 @@
       <!--Mensagens de erro-->
       <ion-item>
         <ion-label position="floating">Senha</ion-label>
-        <ion-input type="password" formControlName="password"></ion-input>
+        <ion-input type="password" formControlName="senha" placeholder="Insira sua Senha"></ion-input>
       </ion-item>
       <!--Mensagens de erro-->
-      <span *ngIf="logar.get('senha')?.touched && logar.get('senha')?.errors?.['required']">A senha é obrigatório!</span>
-      <span *ngIf="logar.get('senha')?.dirty && logar.get('senha')?.errors?.['senha']">S senha é de no mínimo 6 caracteres</span>
+      <span *ngIf="logar.get('senha')?.touched && logar.get('senha')?.errors?.['required']">A senha é obrigatória!</span>
+      <span *ngIf="logar.get('senha')?.dirty && logar.get('senha')?.errors?.['minlength']">A senha deve ter no mínimo 6 caracteres</span>
       <!--Mensagens de erro-->
-      <ion-button expand="full" color="sucess" type="submit">Entrar</ion-button>
+      <ion-button expand="full" color="success" type="submit">Entrar</ion-button>
       <ion-button expand="full" color="danger" (click)="logarComGmail()">Entrar com Google <ion-icon slot="end" name="logo-google"></ion-icon></ion-button>
     </form>
-    <a (click)="irParaRegistrar()">Não tem cadastro? Clique Aqui!</a>
+    <ion-label>Não tem cadastro?</ion-label>
+    <a (click)="irParaRegistrar()"> Clique Aqui!</a>
+    
   </ion-list>
 </ion-content>
