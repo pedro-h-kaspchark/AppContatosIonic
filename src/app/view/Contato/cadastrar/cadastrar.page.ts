@@ -27,7 +27,7 @@ export class CadastrarPage implements OnInit {
   }
 
 cadastrar(){
-  if(this.nome && this.email && this.telefone){
+  if(this.nome && this.email && this.telefone && this.imagem){
     if(this.nome.length >= 3){
       if(validarEmail(this.email)){
         if(this.telefone.toString().length >= 9){

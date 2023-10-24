@@ -32,7 +32,7 @@
 
     <img src="{{this.contato.downloadURL}}">
     <ion-item>
-      <ion-button size="default" color="success" shape="round">
+      <ion-button size="default" color="success" shape="round" disabled="{{ edicao }}">
         <input type="file" (change)="uploadFile($event.target)"/>
       </ion-button>
     </ion-item>

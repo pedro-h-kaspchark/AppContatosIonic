@@ -4,20 +4,28 @@ import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
 const routes: Routes = [
   {
     path: 'home',
-    loadChildren: () => import('./view/home/home.module').then( m => m.HomePageModule)
+    loadChildren: () => import('./view/Contato/home/home.module').then( m => m.HomePageModule)
   },
   {
     path: '',
-    redirectTo: 'home',
+    redirectTo: 'login',
     pathMatch: 'full'
   },
   {
     path: 'cadastrar',
-    loadChildren: () => import('./view/cadastrar/cadastrar.module').then( m => m.CadastrarPageModule)
+    loadChildren: () => import('./view/Contato/cadastrar/cadastrar.module').then( m => m.CadastrarPageModule)
   },
   {
     path: 'detalhar',
-    loadChildren: () => import('./view/detalhar/detalhar.module').then( m => m.DetalharPageModule)
+    loadChildren: () => import('./view/Contato/detalhar/detalhar.module').then( m => m.DetalharPageModule)
+  },
+  {
+    path: 'login',
+    loadChildren: () => import('./view/usuario/login/login.module').then( m => m.LoginPageModule)
+  },
+  {
+    path: 'register',
+    loadChildren: () => import('./view/usuario/register/register.module').then( m => m.RegisterPageModule)
   },
 ];
 
