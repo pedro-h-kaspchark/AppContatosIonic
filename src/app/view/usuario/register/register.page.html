@@ -1,13 +1,38 @@
-<ion-header [translucent]="true">
+<ion-header>
   <ion-toolbar>
-    <ion-title>register</ion-title>
+    <ion-title>Cadastro de Usuário</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">register</ion-title>
-    </ion-toolbar>
-  </ion-header>
+  <ion-list>
+    <form [formGroup]="cadastro" (ngSubmit)="submitForm()" novalidate>
+      <ion-item>
+        <ion-label position="floating">Email</ion-label>
+        <ion-input type="email" formControlName="email" placeholder="Insira seu E-mail"></ion-input>
+      </ion-item>
+      <!--Mensagens de erro-->
+      <span *ngIf="cadastro.get('email')?.touched && cadastro.get('email')?.errors?.['required']">E-mail é obrigatório!</span>
+      <span *ngIf="cadastro.get('email')?.dirty && cadastro.get('email')?.errors?.['email']">Formato de E-mail inválido</span>
+      <!--Mensagens de erro-->
+      <ion-item>
+        <ion-label position="floating">Senha</ion-label>
+        <ion-input type="password" formControlName="senha" placeholder="Insira sua Senha"></ion-input>
+      </ion-item>
+      <!--Mensagens de erro-->
+      <span *ngIf="cadastro.get('senha')?.touched && cadastro.get('senha')?.errors?.['required']">A senha é obrigatória!</span>
+      <span *ngIf="cadastro.get('senha')?.dirty && cadastro.get('senha')?.errors?.['minlength']">A senha deve ter no mínimo 6 caracteres</span>
+      <!--Mensagens de erro-->
+      <ion-item>
+        <ion-label position="floating">Confirmação de Senha</ion-label>
+        <ion-input type="password" formControlName="confSenha" placeholder="Insira a mesma Senha"></ion-input>
+      </ion-item>
+      <!--Mensagens de erro-->
+      <span *ngIf="cadastro.get('confSenha')?.touched && cadastro.get('confSenha')?.errors?.['required']">A confirmação de senha é obrigatória!</span>
+      <span *ngIf="cadastro.get('confSenha')?.dirty && cadastro.get('confSenha')?.errors?.['minlength']">A confirmação de senha deve ter no mínimo 6 caracteres</span>
+      <span *ngIf="cadastro.get('confSenha')?.dirty && (cadastro.get('senha')?.value != cadastro.get('confSenha')?.value) && !cadastro.get('confSenha')?.errors?.['minlength']"> As senhas não conferem!</span>
+      <!--Mensagens de erro-->
+      <ion-button expand="full" color="success" type="submit">Cadastrar</ion-button>
+    </form>
+  </ion-list>
 </ion-content>
